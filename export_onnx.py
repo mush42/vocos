@@ -63,7 +63,7 @@ def export_generator(config_path, checkpoint_path, output_dir, opset_version):
     epoch = state_dict["epoch"]
     global_step = state_dict["global_step"]
     onnx_filename = f"vocos-epoch={epoch}.step={global_step}.onnx"
-    onnx_path = output_dir.joinpath(onnx_filename)
+    onnx_path = os.path.join(output_dir, onnx_filename)
 
     dummy_input = torch.rand(1, vocos.backbone.input_channels, 64)
     dynamic_axes = {
@@ -74,7 +74,7 @@ def export_generator(config_path, checkpoint_path, output_dir, opset_version):
     torch.onnx.export(
         model=model,
         args=dummy_input,
-        f=os.fspath(onnx_path),
+        f=onnx_path,
         input_names=["mels"],
         output_names=["audio"],
         dynamic_axes=dynamic_axes,
@@ -82,7 +82,7 @@ def export_generator(config_path, checkpoint_path, output_dir, opset_version):
         export_params=True,
         do_constant_folding=True,
     )
-    return str(onnx_path)
+    return onnx_path
 
 
 def main():
