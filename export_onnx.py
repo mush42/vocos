@@ -30,10 +30,10 @@ class VocosGen(nn.Module):
 def export_generator(config_path, checkpoint_path, output_dir, opset_version):
     vocos = Vocos.from_hparams(config_path)
     state_dict = torch.load(checkpoint_path, map_location="cpu")
-    if isinstance(model.feature_extractor, EncodecFeatures):
+    if isinstance(vocos.feature_extractor, EncodecFeatures):
         encodec_parameters = {
             "feature_extractor.encodec." + key: value
-            for key, value in model.feature_extractor.encodec.state_dict().items()
+            for key, value in vocos.feature_extractor.encodec.state_dict().items()
         }
         state_dict.update(encodec_parameters)
     vocos.load_state_dict(state_dict)
