@@ -8,10 +8,8 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import yaml
 from torch import nn
-
-from vocos.feature_extractors import EncodecFeatures
-from vocos.pretrained import Vocos
 
 
 DEFAULT_OPSET_VERSION = 15
@@ -24,19 +22,34 @@ class VocosGen(nn.Module):
         self.vocos = vocos
 
     def forward(self, mels):
-        return self.vocos.decode(mels)
+        x = self.vocos.backbone(mels)
+        audio_output = self.vocos.head(x)
+        return audio_output
 
 
 def export_generator(config_path, checkpoint_path, output_dir, opset_version):
-    vocos = Vocos.from_hparams(config_path)
-    state_dict = torch.load(checkpoint_path, map_location="cpu")
-    if isinstance(vocos.feature_extractor, EncodecFeatures):
-        encodec_parameters = {
-            "feature_extractor.encodec." + key: value
-            for key, value in vocos.feature_extractor.encodec.state_dict().items()
-        }
-        state_dict.update(encodec_parameters)
-    vocos.load_state_dict(state_dict)
+    with open(config_path, "r") as f:
+        config = yaml.safe_load(f)
+
+    class_module, class_name = config["model"]["class_path"].rsplit(".", 1)
+    module = __import__(class_module, fromlist=[class_name])
+    vocos_cls = getattr(module, class_name)
+
+    components = Vocos.from_hparams(config_path)
+    params = config["model"]["init_args"]
+    
+    vocos = vocos_cls.load_from_checkpoint(
+        checkpoint_path,
+        map_location="cpu",
+        feature_extractor=components.feature_extractor,
+        backbone=components.backbone,
+        head=components.head,
+        sample_rate=params["sample_rate"],
+        initial_learning_rate=params["initial_learning_rate"],
+        num_warmup_steps=params["num_warmup_steps"],
+        mel_loss_coeff=params["mel_loss_coeff"],
+        mrd_loss_coeff=params["mrd_loss_coeff"],
+    )
 
     model = VocosGen(vocos)
     model.eval()
