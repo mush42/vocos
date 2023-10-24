@@ -12,6 +12,9 @@ import yaml
 from torch import nn
 
 
+from vocos.pretrained import Vocos
+
+
 DEFAULT_OPSET_VERSION = 15
 _LOGGER = logging.getLogger("export_onnx")
 
