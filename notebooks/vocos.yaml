@@ -45,7 +45,7 @@ model:
     backbone:
       class_path: vocos.models.VocosBackbone
       init_args:
-        input_channels: 100
+        input_channels: 80
         dim: 512
         intermediate_dim: 1536
         num_layers: 8
