@@ -71,17 +71,20 @@ def export_generator(config_path, checkpoint_path, output_dir, opset_version):
         "audio": {0: "batch_size", 1: "time"},
     }
 
-    torch.onnx.export(
-        model=model,
-        args=dummy_input,
-        f=onnx_path,
-        input_names=["mels"],
-        output_names=["audio"],
-        dynamic_axes=dynamic_axes,
-        opset_version=opset_version,
-        export_params=True,
-        do_constant_folding=True,
-    )
+    #torch.onnx.export(
+    #    model=model,
+    #    args=dummy_input,
+    #    f=onnx_path,
+    #    input_names=["mels"],
+    #    output_names=["audio"],
+    #    dynamic_axes=dynamic_axes,
+    #     opset_version=opset_version,
+    #      export_params=True,
+    #    do_constant_folding=True,
+    # )
+
+    export_output = torch.onnx.dynamo_export(model, dummy_input)
+    export_output.save(onnx_path)
     return onnx_path
 
 
