@@ -64,6 +64,7 @@ def export_generator(config_path, checkpoint_path, output_dir, opset_version):
         export_params=True,
         do_constant_folding=True,
     )
+    return str(onnx_path)
 
 
 def main():
@@ -90,7 +91,7 @@ def main():
     torch.backends.cudnn.benchmark = False
 
     _LOGGER.info("Exporting model to ONNX")
-    _LOGGER.info(f"Config path: `{args.config_path}`")
+    _LOGGER.info(f"Config path: `{args.config}`")
     _LOGGER.info(f"Using checkpoint: `{args.checkpoint}`")
     onnx_path = export_generator(
         config_path=args.config,
