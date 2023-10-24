@@ -9,14 +9,14 @@ data:
       sampling_rate: 22050
       num_samples: 16384
       batch_size: 16
-      num_workers: 4
+      num_workers: 2
 
     val_params:
       filelist_path: /content/vocos/notebooks/datasets/kareem/val.txt
       sampling_rate: 22050
       num_samples: 16384
       batch_size: 16
-      num_workers: 4
+      num_workers: 2
 
 model:
   class_path: vocos.experiment.VocosExp
