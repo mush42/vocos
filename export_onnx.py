@@ -31,6 +31,8 @@ class VocosGen(nn.Module):
 
 
 def export_generator(config_path, checkpoint_path, output_dir, opset_version):
+    state_dict = torch.load(checkpoint_path, map_location="cpu")
+
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
