@@ -52,7 +52,8 @@ class Vocos(nn.Module):
         Class method to create a new Vocos model instance from hyperparameters stored in a yaml configuration file.
         """
         with open(config_path, "r") as f:
-            config = yaml.safe_load(f)
+            params = yaml.safe_load(f)
+        config = params["model"]["init_args"]
         feature_extractor = instantiate_class(args=(), init=config["feature_extractor"])
         backbone = instantiate_class(args=(), init=config["backbone"])
         head = instantiate_class(args=(), init=config["head"])
