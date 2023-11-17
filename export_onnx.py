@@ -31,7 +31,6 @@ class VocosGen(nn.Module):
 
 
 def export_generator(config_path, checkpoint_path, output_dir, opset_version):
-    state_dict = torch.load(checkpoint_path, map_location="cpu")
 
     with open(config_path, "r") as f:
         config = yaml.safe_load(f)
@@ -60,8 +59,8 @@ def export_generator(config_path, checkpoint_path, output_dir, opset_version):
     model.eval()
 
     Path(output_dir).mkdir(parents=True, exist_ok=True)
-    epoch = state_dict["epoch"]
-    global_step = state_dict["global_step"]
+    epoch = 200
+    global_step = 1000000
     onnx_filename = f"vocos-epoch={epoch}.step={global_step}.onnx"
     onnx_path = os.path.join(output_dir, onnx_filename)
 
