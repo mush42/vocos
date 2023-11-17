@@ -50,6 +50,7 @@ class ISTFT(nn.Module):
                 self.win_length,
                 self.window,
                 return_complex=True,
+                onesided=False,
                 center=True
             )
         elif self.padding == "same":
