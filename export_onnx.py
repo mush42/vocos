@@ -82,7 +82,8 @@ def export_generator(config_path, checkpoint_path, output_dir, opset_version):
     #    do_constant_folding=True,
     # )
 
-    export_output = torch.onnx.dynamo_export(model, dummy_input)
+    export_options = torch.onnx.ExportOptions(dynamic_shapes=False)  
+    export_output = torch.onnx.dynamo_export(model, dummy_input, export_options=export_options)
     export_output.save(onnx_path)
     return onnx_path
 
