@@ -43,9 +43,9 @@ def export_generator(config_path, checkpoint_path, output_dir, opset_version):
     components = Vocos.from_hparams(config_path)
     params = config["model"]["init_args"]
     
-    vocos = vocos_cls.load_from_checkpoint(
-        checkpoint_path,
-        map_location="cpu",
+    vocos = vocos_cls( #load_from_checkpoint
+        # checkpoint_path,
+        # map_location="cpu",
         feature_extractor=components.feature_extractor,
         backbone=components.backbone,
         head=components.head,
