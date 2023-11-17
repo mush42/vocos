@@ -41,19 +41,10 @@ class ISTFT(nn.Module):
         Returns:
             Tensor: Reconstructed time-domain signal of shape (B, L), where L is the length of the output signal.
         """
-        if self.padding == "center":
+        if False:
             # Fallback to pytorch native implementation
-            return torch.istft(
-                spec,
-                spec.shape[1],
-                self.hop_length,
-                win_length=None,
-                window=None,
-                return_complex=True,
-                onesided=False,
-                center=True
-            )
-        elif self.padding == "same":
+            return torch.istft(spec, self.n_fft, self.hop_length, self.win_length, self.window, center=True)
+        elif True:
             pad = (self.win_length - self.hop_length) // 2
         else:
             raise ValueError("Padding must be 'center' or 'same'.")
