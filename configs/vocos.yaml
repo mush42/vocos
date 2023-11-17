@@ -40,7 +40,7 @@ model:
         n_fft: 1024
         hop_length: 256
         n_mels: 100
-        padding: center
+        padding: same
 
     backbone:
       class_path: vocos.models.VocosBackbone
