@@ -45,7 +45,7 @@ class ISTFT(nn.Module):
             # Fallback to pytorch native implementation
             return torch.istft(
                 spec,
-                self.n_fft,
+                spec.shape[1],
                 self.hop_length,
                 self.win_length,
                 self.window,
