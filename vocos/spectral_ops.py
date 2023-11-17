@@ -50,7 +50,7 @@ class ISTFT(nn.Module):
                 self.win_length,
                 self.window,
                 return_complex=True,
-                pad_mode="constant"
+                center=True
             )
         elif self.padding == "same":
             pad = (self.win_length - self.hop_length) // 2
