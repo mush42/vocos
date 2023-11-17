@@ -47,8 +47,8 @@ class ISTFT(nn.Module):
                 spec,
                 spec.shape[1],
                 self.hop_length,
-                self.win_length,
-                self.window,
+                win_length=None,
+                window=None,
                 return_complex=True,
                 onesided=False,
                 center=True
