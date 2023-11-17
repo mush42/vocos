@@ -43,7 +43,7 @@ class ISTFT(nn.Module):
         """
         if self.padding == "center":
             # Fallback to pytorch native implementation
-            return torch.istft(spec, self.n_fft, self.hop_length, self.win_length, self.window, center=True)
+            return torch.istft(spec, self.n_fft, self.hop_length, self.win_length, torch.Tensor(self.window), center=True)
         elif self.padding == "same":
             pad = (self.win_length - self.hop_length) // 2
         else:
